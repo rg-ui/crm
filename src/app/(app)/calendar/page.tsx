@@ -160,13 +160,13 @@ export default function CalendarGoalsPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 3vw, 32px)', height: '100%' }}>
       <header className="page-header" style={{ marginBottom: 0 }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+        <div className="page-header-row">
           <div>
             <h2 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>Calendar & Goals <CalendarIcon size={24} /></h2>
             <p className="page-subtitle">Track your daily schedule and analyze your productivity.</p>
           </div>
 
-          <div style={{ display: 'flex', background: 'rgba(0,0,0,0.2)', padding: '4px', borderRadius: '12px', border: '1px solid var(--surface-border)', width: 'fit-content' }}>
+          <div className="tab-switch" style={{ display: 'flex', background: 'rgba(0,0,0,0.2)', padding: '4px', borderRadius: '12px', border: '1px solid var(--surface-border)', width: 'fit-content' }}>
             <button
               onClick={() => setActiveTab('calendar')}
               style={{
@@ -367,18 +367,12 @@ export default function CalendarGoalsPage() {
 
       <style>{`
         @media (max-width: 768px) {
-          .page-header {
-            flex-direction: column;
-            gap: 12px;
+          .tab-switch {
+            width: 100% !important;
           }
-          .btn-stack-mobile {
-            flex-direction: column;
-            width: 100%;
-          }
-          .btn-stack-mobile .btn-primary,
-          .btn-stack-mobile .btn-secondary {
-            width: 100%;
-            justify-content: center;
+          .tab-switch button {
+            flex: 1;
+            text-align: center;
           }
         }
       `}</style>

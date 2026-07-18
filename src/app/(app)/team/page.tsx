@@ -116,7 +116,7 @@ export default function TeamDirectory() {
             <h2 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>Team Directory <Users size={24} /></h2>
             <p className="page-subtitle">Find teammates, check their skills, and see what they are working on.</p>
           </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div className="team-header-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button className="btn-secondary">Export List</button>
             <button className="btn-primary" onClick={() => setShowInviteModal(true)}>Invite Teammate</button>
           </div>
@@ -329,7 +329,7 @@ export default function TeamDirectory() {
                 className="input" />
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+            <div className="invite-modal-actions" style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
               <button className="btn-secondary" onClick={() => setShowInviteModal(false)} style={{ flex: 1, padding: '12px' }}>Cancel</button>
               <button className="btn-primary" onClick={handleInvite} disabled={inviting || !inviteForm.full_name.trim() || !inviteForm.email.trim()} style={{ flex: 2, padding: '12px', opacity: (!inviteForm.full_name.trim() || !inviteForm.email.trim() || inviting) ? 0.5 : 1 }}>
                 {inviting ? 'Sending Invite...' : 'Send Invite'}
@@ -338,6 +338,25 @@ export default function TeamDirectory() {
           </div>
         </div>
       )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .team-header-actions {
+            flex-direction: column !important;
+            width: 100% !important;
+          }
+          .team-header-actions button {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .invite-modal-actions {
+            flex-direction: column !important;
+          }
+          .invite-modal-actions button {
+            width: 100% !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

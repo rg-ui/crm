@@ -37,6 +37,7 @@ export default function LoginPage() {
     }}>
       <Link
         href="/"
+        className="login-logo"
         style={{
           position: 'absolute',
           top: '24px',
@@ -51,7 +52,7 @@ export default function LoginPage() {
       </Link>
 
       <div
-        className="glass-panel"
+        className="glass-panel login-card"
         style={{
           width: 'min(420px, 100%)',
           padding: '40px',
@@ -134,6 +135,30 @@ export default function LoginPage() {
           )}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .login-logo {
+            position: fixed !important;
+            top: 16px !important;
+            left: 16px !important;
+            font-size: 1.25rem !important;
+          }
+          .login-container {
+            padding: 0 4px !important;
+          }
+          .login-card {
+            padding: 28px 20px !important;
+            gap: 20px !important;
+          }
+          .login-card h1 {
+            font-size: 1.5rem !important;
+          }
+          .login-card p {
+            font-size: 0.875rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

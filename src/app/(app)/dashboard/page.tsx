@@ -216,12 +216,12 @@ export default function Dashboard() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 3vw, 32px)' }}>
       <header className="page-header" style={{ marginBottom: 0 }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+        <div className="page-header-row">
           <div>
             <h2 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{greeting}, {DEFAULT_USER_NAME}! <Sun size={24} className="text-warning" /></h2>
             <p className="page-subtitle">Here&apos;s what&apos;s happening across your startups today.</p>
           </div>
-          <div className="btn-stack-mobile" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div className="btn-group">
             <button
               className="btn-secondary"
               onClick={() => setShowStandup(true)}
@@ -569,19 +569,13 @@ export default function Dashboard() {
       )}
 
       <style>{`
-        @media (max-width: 768px) {
-          .page-header {
-            flex-direction: column;
-            gap: 12px;
-          }
-        }
         @media (max-width: 480px) {
-          .btn-stack-mobile {
+          .btn-group {
             flex-direction: column;
             width: 100%;
           }
-          .btn-stack-mobile .btn-primary,
-          .btn-stack-mobile .btn-secondary {
+          .btn-group .btn-primary,
+          .btn-group .btn-secondary {
             width: 100%;
             justify-content: center;
           }

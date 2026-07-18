@@ -291,7 +291,7 @@ export default function CustomCalendar() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+    <div className="cal-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
 
       {/* Topbar */}
       <div style={{ padding: 'clamp(12px, 2vw, 20px) clamp(16px, 2vw, 24px)', borderBottom: '1px solid var(--surface-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -389,6 +389,7 @@ export default function CustomCalendar() {
               {events.map((event, index) => (
                 <div
                   key={event.id}
+                  className="cal-event-block"
                   style={{
                     position: 'absolute',
                     top:    event.top,
@@ -448,6 +449,7 @@ export default function CustomCalendar() {
 
                   {eventMenu?.id === event.id && (
                     <div
+                      className="cal-context-menu"
                       style={{
                         position: 'absolute',
                         top: '100%',
@@ -592,6 +594,36 @@ export default function CustomCalendar() {
           </div>
         </div>
       )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .cal-wrapper .cal-context-menu {
+            position: fixed !important;
+            top: auto !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            min-width: 100% !important;
+            border-radius: 16px 16px 0 0 !important;
+            padding: 12px 8px !important;
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.5) !important;
+            background: var(--bg-secondary) !important;
+            border: 1px solid var(--surface-border) !important;
+            z-index: 110 !important;
+          }
+          .cal-wrapper .cal-context-menu button {
+            padding: 14px 16px !important;
+            font-size: 0.875rem !important;
+            min-height: 48px !important;
+            border-radius: 10px !important;
+          }
+          .cal-wrapper .cal-event-block {
+            left: 4px !important;
+            right: 4px !important;
+            margin: 0 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

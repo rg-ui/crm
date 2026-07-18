@@ -182,6 +182,62 @@ export default function LandingPage() {
           &copy; {new Date().getFullYear()} StartupOS. Built for startup teams.
         </footer>
       </main>
+
+      <style>{`
+        @media (max-width: 768px) {
+          nav {
+            padding: 16px 20px !important;
+          }
+          main {
+            padding: 48px 20px !important;
+          }
+          main > div:first-child {
+            margin-bottom: 48px !important;
+          }
+          .page-title-small {
+            font-size: 2.5rem !important;
+          }
+          .page-desc-small {
+            font-size: 1rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          nav {
+            padding: 12px 16px !important;
+          }
+          nav a {
+            padding: 8px 18px !important;
+            font-size: 0.8rem !important;
+          }
+          main {
+            padding: 32px 16px !important;
+          }
+          main > div:first-child {
+            margin-bottom: 40px !important;
+          }
+          main > div:first-child > div:first-child {
+            font-size: 0.75rem !important;
+            padding: 6px 14px !important;
+          }
+          .page-title-small {
+            font-size: 2rem !important;
+          }
+          .page-desc-small {
+            font-size: 0.9375rem !important;
+          }
+          main > div:first-child > div:last-child {
+            flex-direction: column !important;
+            width: 100% !important;
+          }
+          main > div:first-child > div:last-child a {
+            width: 100% !important;
+            text-align: center !important;
+            justify-content: center !important;
+            padding: 14px 24px !important;
+            font-size: 1rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -1115,7 +1115,7 @@ export default function Settings() {
           {activeTab === 'expenses' && (
             <>
               {/* Summary Cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(160px, 100%), 1fr))', gap: '12px' }}>
+              <div className="settings-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(160px, 100%), 1fr))', gap: '12px' }}>
                 <div className="glass-card" style={{ padding: 'clamp(14px, 2vw, 20px)' }}>
                   <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>This Month</div>
                   <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', fontWeight: 700, color: '#ffcb3b' }}>₹{expenseTotals.total.toFixed(2)}</div>
@@ -1387,9 +1387,13 @@ export default function Settings() {
 
       <style>{`
         @media (max-width: 768px) {
-          .page-header {
-            flex-direction: column;
-            gap: 12px;
+          .settings-summary-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .settings-summary-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>
