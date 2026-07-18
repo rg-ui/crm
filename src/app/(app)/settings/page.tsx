@@ -38,10 +38,11 @@ type Expense = {
 };
 
 const CATEGORIES = [
-  'Software', 'Infrastructure', 'Marketing', 'Office', 'Travel', 'Legal', 'Other',
+  'Personal', 'Software', 'Infrastructure', 'Marketing', 'Office', 'Travel', 'Legal', 'Other',
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
+  Personal: '#f472b6',
   Software: '#C6F432',
   Infrastructure: '#10b981',
   Marketing: '#3b82f6',
