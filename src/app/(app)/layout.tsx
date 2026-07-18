@@ -45,7 +45,7 @@ export default function AppLayout({
         </aside>
 
         {/* Desktop sidebar */}
-        <aside className="desktop-sidebar glass-panel" style={{ width: 'var(--sidebar-width)', margin: '16px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <aside className="desktop-sidebar glass-panel" style={{ width: 'var(--sidebar-width)', margin: '16px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', overflow: 'hidden', height: 'calc(100vh - 32px)' }}>
           <Sidebar onNavigate={() => {}} />
         </aside>
 

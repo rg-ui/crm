@@ -556,8 +556,8 @@ textarea.input {
   top: 0;
   left: 0;
   bottom: 0;
-  width: var(--sidebar-width);
-  max-width: 85vw;
+  width: 85vw;
+  max-width: 320px;
   z-index: 100;
   background: var(--bg-secondary);
   border-right: 1px solid var(--surface-border);
@@ -565,6 +565,7 @@ textarea.input {
   transition: transform var(--transition-normal);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .sidebar-drawer.open {
@@ -690,10 +691,6 @@ textarea.input {
 }
 
 @media (max-width: 768px) {
-  :root {
-    --sidebar-width: 0px;
-  }
-
   html, body {
     font-size: 15px;
   }
