@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { getOAuth2Client, storeGoogleTokens } from '@/lib/google';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
 export async function GET(req: NextRequest) {
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
       const oauth2 = google.oauth2({ version: 'v2', auth: oauth2Client });
       const userInfo = await oauth2.userinfo.get();
       if (userInfo.data.email) {
-        await supabaseAdmin
+        await getSupabaseAdmin()
           .from('user_integrations')
           .update({ metadata: { email: userInfo.data.email, name: userInfo.data.name, picture: userInfo.data.picture } })
           .eq('user_id', DEFAULT_USER_ID)

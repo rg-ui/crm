@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 // GET /api/goals?workspace_id=xxx&user_id=xxx&date=2024-01-01
 export async function GET(req: NextRequest) {
@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   const user_id = searchParams.get('user_id');
   const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
 
-  let query = supabaseAdmin
+  let query = getSupabaseAdmin()
     .from('goals')
     .select('*')
     .eq('goal_date', date)
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'title and user_id are required' }, { status: 400 });
   }
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('goals')
     .insert({ title, description, workspace_id, user_id, goal_date: goal_date || new Date().toISOString().split('T')[0], due_date, priority })
     .select()
@@ -57,7 +57,7 @@ export async function PATCH(req: NextRequest) {
   if (title !== undefined) updates.title = title;
   if (description !== undefined) updates.description = description;
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('goals')
     .update(updates)
     .eq('id', id)
@@ -73,7 +73,7 @@ export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
 
-  const { error } = await supabaseAdmin.from('goals').delete().eq('id', id);
+  const { error } = await getSupabaseAdmin().from('goals').delete().eq('id', id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }

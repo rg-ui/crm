@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { getAuthenticatedClient } from '@/lib/google';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
 export async function POST() {
@@ -24,7 +24,7 @@ export async function POST() {
     const googleEvents = response.data.items || [];
 
     // Get existing CRM events with google_event_ids
-    const { data: existingEvents } = await supabaseAdmin
+    const { data: existingEvents } = await getSupabaseAdmin()
       .from('calendar_events')
       .select('*')
       .eq('user_id', DEFAULT_USER_ID);
@@ -53,7 +53,7 @@ export async function POST() {
       const eventType = isMeeting ? 'meeting' : 'task';
       const color = isMeeting ? '#f59e0b' : (ge.eventType === 'focusTime' ? '#ffb300' : '#ffcb3b');
 
-      const { error } = await supabaseAdmin.from('calendar_events').insert({
+      const { error } = await getSupabaseAdmin().from('calendar_events').insert({
         user_id: DEFAULT_USER_ID,
         title: ge.summary || 'Untitled Event',
         description: ge.description || null,

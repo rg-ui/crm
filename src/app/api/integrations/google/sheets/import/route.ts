@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { getAuthenticatedClient } from '@/lib/google';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
 export async function POST(req: NextRequest) {
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         const startTime = record.start_time || record.start;
         const endTime = record.end_time || record.end;
 
-        const { error } = await supabaseAdmin.from('calendar_events').insert({
+        const { error } = await getSupabaseAdmin().from('calendar_events').insert({
           user_id: DEFAULT_USER_ID,
           title: record.title,
           description: record.description || record.type || null,
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
           imported++;
         }
       } else if (record.title) {
-        const { error } = await supabaseAdmin.from('goals').insert({
+        const { error } = await getSupabaseAdmin().from('goals').insert({
           user_id: DEFAULT_USER_ID,
           title: record.title,
           description: record.description || null,

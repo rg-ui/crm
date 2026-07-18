@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { getAuthenticatedClient } from '@/lib/google';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
 type ExportTarget = 'goals' | 'events' | 'expenses' | 'standups' | 'all';
 
 async function getSheetData(target: ExportTarget) {
   if (target === 'goals' || target === 'all') {
-    const { data } = await supabaseAdmin.from('goals').select('*').order('created_at', { ascending: false });
+    const { data } = await getSupabaseAdmin().from('goals').select('*').order('created_at', { ascending: false });
     if (data) {
       const headers = ['ID', 'Title', 'Description', 'Status', 'Priority', 'Progress', 'Goal Date', 'Due Date', 'Created At', 'Completed At'];
       const rows = data.map(g => [g.id, g.title, g.description || '', g.status, g.priority, String(g.progress), g.goal_date || '', g.due_date || '', g.created_at, g.completed_at || '']);
@@ -17,7 +17,7 @@ async function getSheetData(target: ExportTarget) {
   }
 
   if (target === 'events' || target === 'all') {
-    const { data } = await supabaseAdmin.from('calendar_events').select('*').order('start_time', { ascending: false });
+    const { data } = await getSupabaseAdmin().from('calendar_events').select('*').order('start_time', { ascending: false });
     if (data) {
       const headers = ['ID', 'Title', 'Description', 'Type', 'Start', 'End', 'Meet Link', 'Color'];
       const rows = data.map(e => [e.id, e.title, e.description || '', e.event_type, e.start_time, e.end_time, e.meet_link || '', e.color || '']);
@@ -26,7 +26,7 @@ async function getSheetData(target: ExportTarget) {
   }
 
   if (target === 'standups' || target === 'all') {
-    const { data } = await supabaseAdmin.from('standups').select('*').order('standup_date', { ascending: false });
+    const { data } = await getSupabaseAdmin().from('standups').select('*').order('standup_date', { ascending: false });
     if (data) {
       const headers = ['ID', 'Date', 'Accomplished', 'Plan', 'Blockers', 'Morale'];
       const rows = data.map(s => [s.id, s.standup_date, s.accomplished || '', s.plan_for_tomorrow || '', s.blockers || '', String(s.morale_score || '')]);

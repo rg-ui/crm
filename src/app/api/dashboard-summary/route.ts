@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 export async function GET(req: NextRequest) {
   try {
@@ -9,25 +9,25 @@ export async function GET(req: NextRequest) {
     const today = new Date().toISOString().split('T')[0];
 
     // 1. Fetch all workspaces
-    const { data: workspaces, error: wsError } = await supabaseAdmin
+    const { data: workspaces, error: wsError } = await getSupabaseAdmin()
       .from('workspaces')
       .select('*');
     if (wsError) throw wsError;
 
     // 2. Fetch goals for today (optionally filtered by user)
-    let goalsQuery = supabaseAdmin.from('goals').select('*').eq('goal_date', today);
+    let goalsQuery = getSupabaseAdmin().from('goals').select('*').eq('goal_date', today);
     if (user_id) goalsQuery = goalsQuery.eq('user_id', user_id);
     const { data: goals, error: goalsError } = await goalsQuery;
     if (goalsError) throw goalsError;
 
     // 3. Fetch standups for today (optionally filtered by user)
-    let standupsQuery = supabaseAdmin.from('standups').select('*').eq('standup_date', today);
+    let standupsQuery = getSupabaseAdmin().from('standups').select('*').eq('standup_date', today);
     if (user_id) standupsQuery = standupsQuery.eq('user_id', user_id);
     const { data: standups, error: standupsError } = await standupsQuery;
     if (standupsError) throw standupsError;
 
     // 4. Fetch OKRs
-    const { data: okrs, error: okrsError } = await supabaseAdmin
+    const { data: okrs, error: okrsError } = await getSupabaseAdmin()
       .from('okrs')
       .select('*');
     if (okrsError) throw okrsError;

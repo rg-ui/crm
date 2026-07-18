@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
@@ -59,12 +59,12 @@ export async function GET(req: NextRequest) {
     const today = new Date().toISOString().split('T')[0];
 
     // Fetch today's goals
-    let goalsQ = supabaseAdmin.from('goals').select('*').eq('goal_date', today);
+    let goalsQ = getSupabaseAdmin().from('goals').select('*').eq('goal_date', today);
     if (user_id) goalsQ = goalsQ.eq('user_id', user_id);
     const { data: goals } = await goalsQ;
 
     // Fetch today's standups
-    let standupsQ = supabaseAdmin.from('standups').select('*').eq('standup_date', today);
+    let standupsQ = getSupabaseAdmin().from('standups').select('*').eq('standup_date', today);
     if (user_id) standupsQ = standupsQ.eq('user_id', user_id);
     const { data: standups } = await standupsQ;
 

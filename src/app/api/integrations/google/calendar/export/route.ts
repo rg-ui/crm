@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { getAuthenticatedClient } from '@/lib/google';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
 export async function POST(req: NextRequest) {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const { oauth2Client } = await getAuthenticatedClient(DEFAULT_USER_ID);
     const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-    const { data: event } = await supabaseAdmin
+    const { data: event } = await getSupabaseAdmin()
       .from('calendar_events')
       .select('*')
       .eq('id', event_id)
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     const created = response.data;
     const meetLink = created.hangoutLink || null;
 
-    const { error: updateError } = await supabaseAdmin
+    const { error: updateError } = await getSupabaseAdmin()
       .from('calendar_events')
       .update({
         google_event_id: created.id,

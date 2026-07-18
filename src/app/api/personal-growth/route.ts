@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 // We store personal growth items as goals with priority='low' and a special description marker
 const GROWTH_MARKER = '__personal_growth__';
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   if (!user_id) return NextResponse.json({ error: 'user_id required' }, { status: 400 });
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('goals')
     .select('*')
     .eq('user_id', user_id)
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
   if (!title || !user_id) return NextResponse.json({ error: 'title and user_id required' }, { status: 400 });
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('goals')
     .insert({
       title,
@@ -63,7 +63,7 @@ export async function PATCH(req: NextRequest) {
     updates.completed_at = null;
   }
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('goals')
     .update(updates)
     .eq('id', id)
@@ -79,7 +79,7 @@ export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 
-  const { error } = await supabaseAdmin.from('goals').delete().eq('id', id);
+  const { error } = await getSupabaseAdmin().from('goals').delete().eq('id', id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }

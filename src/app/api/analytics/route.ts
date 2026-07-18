@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
 export async function GET(req: NextRequest) {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     twentyEightDaysAgo.setHours(0, 0, 0, 0);
 
     // Fetch completed goals in last 7 days
-    const { data: weeklyGoals, error: goalsErr } = await supabaseAdmin
+    const { data: weeklyGoals, error: goalsErr } = await getSupabaseAdmin()
       .from('goals')
       .select('*')
       .eq('user_id', user_id)
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     const sixtyDaysAgo = new Date(today);
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
     sixtyDaysAgo.setHours(0, 0, 0, 0);
-    const { data: streakGoals, error: streakErr } = await supabaseAdmin
+    const { data: streakGoals, error: streakErr } = await getSupabaseAdmin()
       .from('goals')
       .select('completed_at')
       .eq('user_id', user_id)
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
     if (streakErr) throw streakErr;
 
     // Fetch deep work events in last 7 days
-    const { data: dwEvents, error: dwErr } = await supabaseAdmin
+    const { data: dwEvents, error: dwErr } = await getSupabaseAdmin()
       .from('calendar_events')
       .select('*')
       .eq('user_id', user_id)
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     if (dwErr) throw dwErr;
 
     // Fetch completed goals for weekly breakdown (last 28 days)
-    const { data: monthGoals, error: monthErr } = await supabaseAdmin
+    const { data: monthGoals, error: monthErr } = await getSupabaseAdmin()
       .from('goals')
       .select('*')
       .eq('user_id', user_id)
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
     if (monthErr) throw monthErr;
 
     // Fetch all goals for last 28 days for completion rate
-    const { data: allGoals, error: allErr } = await supabaseAdmin
+    const { data: allGoals, error: allErr } = await getSupabaseAdmin()
       .from('goals')
       .select('*')
       .eq('user_id', user_id)
@@ -123,7 +123,7 @@ export async function GET(req: NextRequest) {
     fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
     fourteenDaysAgo.setHours(0, 0, 0, 0);
 
-    const { data: prevWeekGoals, error: prevErr } = await supabaseAdmin
+    const { data: prevWeekGoals, error: prevErr } = await getSupabaseAdmin()
       .from('goals')
       .select('*')
       .eq('user_id', user_id)

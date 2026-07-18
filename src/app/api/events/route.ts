@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { getGoogleIntegration, getOAuth2Client } from '@/lib/google';
 import { DEFAULT_USER_ID } from '@/lib/constants';
 
@@ -40,7 +40,7 @@ async function syncToGoogleCalendar(event: any) {
 
     const created = response.data;
 
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from('calendar_events')
       .update({
         google_event_id: created.id,
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
   const endDate = new Date(new Date(date).getTime() + range * 24 * 60 * 60 * 1000);
   const endOfRange = `${endDate.toISOString().split('T')[0]}T23:59:59.999Z`;
 
-  let query = supabaseAdmin
+  let query = getSupabaseAdmin()
     .from('calendar_events')
     .select('*')
     .gte('start_time', startOfDay)
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'title, user_id, start_time, end_time are required' }, { status: 400 });
   }
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('calendar_events')
     .insert({ title, description, workspace_id, user_id, start_time, end_time, event_type: event_type || 'task', color: color || '#ffcb3b' })
     .select()
@@ -137,7 +137,7 @@ export async function PATCH(req: NextRequest) {
   if (color !== undefined) updates.color = color;
   if (workspace_id !== undefined) updates.workspace_id = workspace_id;
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('calendar_events')
     .update(updates)
     .eq('id', id)
@@ -153,13 +153,13 @@ export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
 
-  const { data: event } = await supabaseAdmin
+  const { data: event } = await getSupabaseAdmin()
     .from('calendar_events')
     .select('google_event_id')
     .eq('id', id)
     .single();
 
-  const { error } = await supabaseAdmin.from('calendar_events').delete().eq('id', id);
+  const { error } = await getSupabaseAdmin().from('calendar_events').delete().eq('id', id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   if (event?.google_event_id) {

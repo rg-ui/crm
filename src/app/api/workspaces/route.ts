@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 // GET /api/workspaces?user_id=xxx
 export async function GET(req: NextRequest) {
   const user_id = new URL(req.url).searchParams.get('user_id');
 
-  let query = supabaseAdmin
+  let query = getSupabaseAdmin()
     .from('workspaces')
     .select('*');
 
   if (user_id) {
     // Get workspaces that user is a member of
-    const { data: memberOf } = await supabaseAdmin
+    const { data: memberOf } = await getSupabaseAdmin()
       .from('workspace_members')
       .select('workspace_id')
       .eq('user_id', user_id);
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Create workspace
-  const { data: workspace, error } = await supabaseAdmin
+  const { data: workspace, error } = await getSupabaseAdmin()
     .from('workspaces')
     .insert({ name, description, owner_id, color: color || '#ffcb3b' })
     .select()
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   // Automatically add owner as admin member
-  await supabaseAdmin.from('workspace_members').insert({
+  await getSupabaseAdmin().from('workspace_members').insert({
     workspace_id: workspace.id,
     user_id: owner_id,
     role: 'admin',

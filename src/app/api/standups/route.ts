@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 // GET /api/standups?user_id=xxx&workspace_id=xxx&date=2024-01-01
 export async function GET(req: NextRequest) {
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const date = searchParams.get('date') || new Date().toISOString().split('T')[0];
 
   try {
-    let query = supabaseAdmin
+    let query = getSupabaseAdmin()
       .from('standups')
       .select('*')
       .eq('standup_date', date)
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     // If no workspace, clean up any existing null-workspace standup for this user+date
     if (!wsId) {
-      await supabaseAdmin
+      await getSupabaseAdmin()
         .from('standups')
         .delete()
         .eq('user_id', user_id)
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         .is('workspace_id', null);
     }
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('standups')
       .upsert({
         user_id,

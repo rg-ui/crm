@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { supabaseAdmin } from './supabase';
+import { getSupabaseAdmin } from './supabase';
 
 export type GoogleIntegration = {
   id: string;
@@ -32,7 +32,7 @@ export function getOAuth2Client() {
 }
 
 export async function getGoogleIntegration(userId: string): Promise<GoogleIntegration | null> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('user_integrations')
     .select('*')
     .eq('user_id', userId)
@@ -62,7 +62,7 @@ export async function getAuthenticatedClient(userId: string) {
     if (tokens.refresh_token) update.refresh_token = tokens.refresh_token;
     if (tokens.expiry_date) update.token_expires_at = new Date(tokens.expiry_date).toISOString();
 
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from('user_integrations')
       .update(update)
       .eq('user_id', userId)
@@ -76,7 +76,7 @@ export async function storeGoogleTokens(
   userId: string,
   tokens: { access_token?: string | null; refresh_token?: string | null; expiry_date?: number | null; scope?: string | null }
 ) {
-  const { error } = await supabaseAdmin.from('user_integrations').upsert(
+  const { error } = await getSupabaseAdmin().from('user_integrations').upsert(
     {
       user_id: userId,
       provider: 'google',
@@ -93,7 +93,7 @@ export async function storeGoogleTokens(
 }
 
 export async function deleteGoogleTokens(userId: string) {
-  const { error } = await supabaseAdmin
+  const { error } = await getSupabaseAdmin()
     .from('user_integrations')
     .delete()
     .eq('user_id', userId)

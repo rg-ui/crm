@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { Resend } from 'resend';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   try {
     if (id) {
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await getSupabaseAdmin()
         .from('profiles')
         .select('*')
         .eq('id', id)
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(data || null);
     }
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('profiles')
       .select('*')
       .order('full_name', { ascending: true });
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('profiles')
       .upsert({
         id,
@@ -152,7 +152,7 @@ export async function PATCH(req: NextRequest) {
     if (role_title !== undefined) updates.role_title = role_title;
     if (skills !== undefined) updates.skills = skills;
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('profiles')
       .update(updates)
       .eq('id', id)
@@ -175,7 +175,7 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from('profiles')
       .delete()
       .eq('id', id);
