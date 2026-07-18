@@ -69,28 +69,7 @@ export default function AppLayout({
               paddingTop: 'env(safe-area-inset-top)',
             }}
           >
-            <button
-              className="btn-icon"
-              onClick={toggleSidebar}
-              aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                {sidebarOpen ? (
-                  <>
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </>
-                ) : (
-                  <>
-                    <line x1="4" y1="6" x2="20" y2="6" />
-                    <line x1="4" y1="12" x2="20" y2="12" />
-                    <line x1="4" y1="18" x2="20" y2="18" />
-                  </>
-                )}
-              </svg>
-            </button>
-            <span style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--text-primary)' }}>StartupOS</span>
-            <div style={{ width: '44px' }} />
+            <span style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--text-primary)', margin: '0 auto' }}>StartupOS</span>
           </header>
 
           <div className="app-content" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
